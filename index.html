@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pragyaa Fitness – Malegaon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --dark: #111111;
+      --card: #161616;
+      --border: #2a2a2a;
+      --gold: #e8a020;
+      --gold-light: #f5c04a;
+      --white: #f0ede8;
+      --muted: #888;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 40px;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 24px;
+      letter-spacing: 2px;
+      color: var(--gold);
+    }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta {
+      background: var(--gold); color: var(--black);
+      padding: 10px 22px; font-size: 13px; font-weight: 500;
+      letter-spacing: 1px; text-transform: uppercase;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: background .2s;
+    }
+    .nav-cta:hover { background: var(--gold-light); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 40px 80px;
+      position: relative;
+      background: var(--black);
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #1a1200 0%, #0a0a0a 60%);
+    }
+    .hero-accent {
+      position: absolute; top: 0; right: 0;
+      width: 55%; height: 100%;
+      background: url('img2.png') center/cover no-repeat;
+      opacity: 0.18;
+    }
+    .hero-accent::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, var(--black) 0%, transparent 60%);
+    }
+    .hero-tag {
+      font-size: 12px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 16px;
+      opacity: 0; animation: fadeUp .6s .2s forwards;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(72px, 12vw, 160px);
+      line-height: .9;
+      letter-spacing: 2px;
+      color: var(--white);
+      opacity: 0; animation: fadeUp .6s .4s forwards;
+    }
+    .hero-title span { color: var(--gold); }
+    .hero-sub {
+      margin-top: 24px; max-width: 480px;
+      font-size: 16px; line-height: 1.7; color: var(--muted);
+      opacity: 0; animation: fadeUp .6s .6s forwards;
+    }
+    .hero-actions {
+      margin-top: 40px; display: flex; gap: 16px; align-items: center;
+      opacity: 0; animation: fadeUp .6s .8s forwards;
+    }
+    .btn-primary {
+      background: var(--gold); color: var(--black);
+      padding: 16px 36px; font-size: 14px; font-weight: 500;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      text-decoration: none; display: inline-block;
+      transition: background .2s, transform .15s;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .btn-outline {
+      color: var(--white); border: 1px solid var(--border);
+      padding: 16px 36px; font-size: 14px; letter-spacing: 1.5px;
+      text-transform: uppercase; text-decoration: none; display: inline-block;
+      transition: border-color .2s;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+    .hero-stats {
+      position: absolute; bottom: 80px; right: 40px;
+      display: flex; gap: 48px;
+      opacity: 0; animation: fadeUp .6s 1s forwards;
+    }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 48px; color: var(--gold); line-height: 1;
+    }
+    .stat-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* SECTION SHARED */
+    section { padding: 100px 40px; }
+    .section-tag {
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(40px, 6vw, 72px);
+      line-height: 1; letter-spacing: 1px;
+      margin-bottom: 24px;
+    }
+    .section-body {
+      font-size: 16px; line-height: 1.8; color: var(--muted);
+      max-width: 520px;
+    }
+    .divider {
+      width: 48px; height: 2px; background: var(--gold);
+      margin-bottom: 32px;
+    }
+
+    /* ABOUT */
+    .about { background: var(--dark); }
+    .about-inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .about-img-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    .about-img-grid img {
+      width: 100%; aspect-ratio: 1/1; object-fit: cover;
+      filter: grayscale(20%);
+      transition: filter .3s, transform .3s;
+    }
+    .about-img-grid img:hover { filter: grayscale(0); transform: scale(1.02); }
+    .about-img-grid img:first-child {
+      grid-column: 1 / -1; aspect-ratio: 16/9;
+    }
+
+    /* EQUIPMENT */
+    .equipment { background: var(--black); }
+    .equip-header {
+      max-width: 1200px; margin: 0 auto 60px;
+      display: flex; justify-content: space-between; align-items: flex-end;
+    }
+    .equip-grid {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+    }
+    .equip-item {
+      position: relative; overflow: hidden;
+      aspect-ratio: 4/3;
+      background: var(--card);
+    }
+    .equip-item img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .5s, opacity .3s;
+      opacity: .75;
+    }
+    .equip-item:hover img { transform: scale(1.06); opacity: 1; }
+    .equip-item:first-child { grid-column: span 2; aspect-ratio: unset; }
+    .equip-label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 40px 20px 16px;
+      background: linear-gradient(to top, rgba(0,0,0,.85), transparent);
+      font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--white);
+    }
+
+    /* MEMBERSHIP */
+    .membership { background: var(--dark); }
+    .membership-inner { max-width: 1200px; margin: 0 auto; }
+    .plans-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+      margin-top: 60px;
+    }
+    .plan-card {
+      background: var(--card); border: 1px solid var(--border);
+      padding: 40px 32px;
+      transition: border-color .2s;
+      position: relative; overflow: hidden;
+    }
+    .plan-card:hover { border-color: var(--gold); }
+    .plan-card.featured {
+      border-color: var(--gold);
+      background: #161200;
+    }
+    .plan-card.featured::before {
+      content: 'MOST POPULAR';
+      position: absolute; top: 16px; right: 16px;
+      font-size: 10px; letter-spacing: 2px;
+      background: var(--gold); color: var(--black);
+      padding: 4px 10px;
+    }
+    .plan-name {
+      font-family: var(--font-display);
+      font-size: 32px; letter-spacing: 2px; color: var(--white);
+    }
+    .plan-price {
+      font-family: var(--font-display);
+      font-size: 64px; color: var(--gold); line-height: 1;
+      margin: 20px 0 4px;
+    }
+    .plan-price span { font-size: 22px; color: var(--muted); }
+    .plan-duration { font-size: 13px; color: var(--muted); letter-spacing: 1px; margin-bottom: 32px; }
+    .plan-features { list-style: none; }
+    .plan-features li {
+      font-size: 14px; color: var(--muted); padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .plan-features li::before {
+      content: '';
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--gold); flex-shrink: 0;
+    }
+    .plan-features li:last-child { border-bottom: none; }
+    .plan-btn {
+      display: block; text-align: center; margin-top: 32px;
+      padding: 14px; font-size: 13px; letter-spacing: 2px;
+      text-transform: uppercase; text-decoration: none;
+      border: 1px solid var(--border); color: var(--white);
+      transition: all .2s;
+    }
+    .plan-card.featured .plan-btn {
+      background: var(--gold); border-color: var(--gold); color: var(--black); font-weight: 500;
+    }
+    .plan-btn:hover { background: var(--gold); border-color: var(--gold); color: var(--black); }
+    .plan-note { font-size: 12px; color: var(--muted); margin-top: 20px; text-align: center; }
+
+    /* LOCATION */
+    .location { background: var(--black); }
+    .location-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+    }
+    .info-block { margin-bottom: 36px; }
+    .info-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+    .info-value { font-size: 16px; line-height: 1.7; color: var(--white); }
+    .map-wrap {
+      width: 100%; height: 360px; border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .map-wrap iframe { width: 100%; height: 100%; border: none; filter: grayscale(80%) invert(10%); }
+
+    /* CTA BANNER */
+    .cta-banner {
+      background: var(--gold);
+      padding: 80px 40px;
+      text-align: center;
+    }
+    .cta-banner h2 {
+      font-family: var(--font-display);
+      font-size: clamp(40px, 6vw, 80px);
+      color: var(--black); line-height: 1; margin-bottom: 12px;
+    }
+    .cta-banner p { font-size: 16px; color: rgba(0,0,0,.6); margin-bottom: 36px; }
+    .cta-wa {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--black); color: var(--gold);
+      padding: 16px 40px; font-size: 14px; font-weight: 500;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      text-decoration: none; transition: background .2s;
+    }
+    .cta-wa:hover { background: #1a1a1a; }
+    .wa-icon { width: 20px; height: 20px; fill: var(--gold); }
+
+    /* FOOTER */
+    footer {
+      background: var(--dark); padding: 40px;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 16px;
+    }
+    .footer-logo { font-family: var(--font-display); font-size: 20px; letter-spacing: 2px; color: var(--gold); }
+    .footer-copy { font-size: 12px; color: var(--muted); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 12px; color: var(--muted); text-decoration: none; letter-spacing: 1px; text-transform: uppercase; }
+    .footer-links a:hover { color: var(--gold); }
+
+    /* WHATSAPP FLOAT */
+    .wa-float {
+      position: fixed; bottom: 28px; right: 28px; z-index: 200;
+      width: 56px; height: 56px;
+      background: #25D366; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 24px rgba(37,211,102,.4);
+      text-decoration: none;
+      transition: transform .2s;
+    }
+    .wa-float:hover { transform: scale(1.1); }
+    .wa-float svg { width: 28px; height: 28px; fill: white; }
+
+    /* HAMBURGER (mobile) */
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 24px; height: 2px; background: var(--white); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .hero { padding: 0 20px 60px; }
+      .hero-stats { display: none; }
+      section { padding: 70px 20px; }
+      .about-inner, .location-inner { grid-template-columns: 1fr; gap: 40px; }
+      .plans-grid { grid-template-columns: 1fr; }
+      .equip-grid { grid-template-columns: 1fr 1fr; }
+      .equip-item:first-child { grid-column: 1 / -1; }
+      footer { flex-direction: column; text-align: center; }
+      .equip-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">PRAGYAA FITNESS</div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#equipment">Equipment</a></li>
+      <li><a href="#membership">Membership</a></li>
+      <li><a href="#location">Location</a></li>
+    </ul>
+    <a href="https://wa.me/917040909085" class="nav-cta" target="_blank">Join Now</a>
+    <div class="hamburger"><span></span><span></span><span></span></div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-bg"></div>
+    <div class="hero-accent"></div>
+    <div style="position:relative; z-index:2;">
+      <p class="hero-tag">Malegaon's Premier Gym</p>
+      <h1 class="hero-title">TRAIN<br><span>HARD.</span><br>LIVE<br>STRONG.</h1>
+      <p class="hero-sub">Pragyaa Fitness is a fully-equipped gym in Camp, Malegaon — built for serious people who want real results.</p>
+      <div class="hero-actions">
+        <a href="#membership" class="btn-primary">View Membership</a>
+        <a href="#equipment" class="btn-outline">Our Equipment</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">4.3★</div>
+        <div class="stat-label">Google Rating</div>
+      </div>
+      <div>
+        <div class="stat-num">100+</div>
+        <div class="stat-label">Members</div>
+      </div>
+      <div>
+        <div class="stat-num">AM–PM</div>
+        <div class="stat-label">Open Daily</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="about-inner">
+      <div class="about-img-grid">
+        <img src="img5.png" alt="Pragyaa Fitness weight training area"/>
+        <img src="img4.png" alt="Pragyaa Fitness cardio equipment"/>
+        <img src="img6.png" alt="Pragyaa Fitness trainer"/>
+      </div>
+      <div>
+        <p class="section-tag">Who We Are</p>
+        <div class="divider"></div>
+        <h2 class="section-title">MORE THAN<br>A GYM</h2>
+        <p class="section-body">Pragyaa Fitness is Malegaon's dedicated fitness centre for men and women who are serious about their health. From strength training to cardio, we have everything you need under one roof — with experienced trainers to guide every step.</p>
+        <p class="section-body" style="margin-top:16px">Located near Daulati International School, Camp — we're easy to reach and hard to leave.</p>
+        <a href="https://wa.me/917040909085" class="btn-primary" style="margin-top:36px; display:inline-block" target="_blank">Contact Us on WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- EQUIPMENT -->
+  <section class="equipment" id="equipment">
+    <div class="equip-header">
+      <div>
+        <p class="section-tag">What We Have</p>
+        <div class="divider"></div>
+        <h2 class="section-title">WORLD-CLASS<br>EQUIPMENT</h2>
+      </div>
+      <p style="color:var(--muted); font-size:15px; max-width:320px; text-align:right">Modern machines, free weights, and dedicated cardio — everything you need to crush your goals.</p>
+    </div>
+    <div class="equip-grid">
+      <div class="equip-item">
+        <img src="img4.png" alt="Full gym floor view"/>
+        <div class="equip-label">Full Training Floor</div>
+      </div>
+      <div class="equip-item">
+        <img src="img2.png" alt="Treadmills"/>
+        <div class="equip-label">Treadmills</div>
+      </div>
+      <div class="equip-item">
+        <img src="img3.png" alt="Spin bikes"/>
+        <div class="equip-label">Spin Bikes</div>
+      </div>
+      <div class="equip-item">
+        <img src="img5.png" alt="Strength machines"/>
+        <div class="equip-label">Strength Machines</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEMBERSHIP -->
+  <section class="membership" id="membership">
+    <div class="membership-inner">
+      <p class="section-tag">Plans & Pricing</p>
+      <div class="divider"></div>
+      <h2 class="section-title">CHOOSE YOUR<br>PLAN</h2>
+      <p class="section-body">Flexible membership options for every goal and schedule. All plans include full equipment access and trainer guidance.</p>
+      <div class="plans-grid">
+        <div class="plan-card">
+          <div class="plan-name">MONTHLY</div>
+          <div class="plan-price"><span>₹</span>1,100</div>
+          <div class="plan-duration">per month</div>
+          <ul class="plan-features">
+            <li>Full equipment access</li>
+            <li>Trainer guidance</li>
+            <li>Locker facility</li>
+            <li>Flexible timings</li>
+          </ul>
+          <a href="https://wa.me/917040909085" class="plan-btn" target="_blank">Get Started</a>
+        </div>
+        <div class="plan-card featured">
+          <div class="plan-name">3 MONTHS</div>
+          <div class="plan-price"><span>₹</span>2,100</div>
+          <div class="plan-duration">per 3 months — save ₹1,200</div>
+          <ul class="plan-features">
+            <li>Full equipment access</li>
+            <li>Personal trainer session</li>
+            <li>Diet guidance</li>
+            <li>Locker facility</li>
+            <li>Priority timings</li>
+          </ul>
+          <a href="https://wa.me/917040909085" class="plan-btn" target="_blank">Get Started</a>
+        </div>
+        <div class="plan-card">
+          <div class="plan-name">6 MONTHS</div>
+          <div class="plan-price"><span>₹</span>4,200</div>
+          <div class="plan-duration">per 6 months — best value</div>
+          <ul class="plan-features">
+            <li>Full equipment access</li>
+            <li>Unlimited trainer sessions</li>
+            <li>Personalised diet plan</li>
+            <li>Locker facility</li>
+            <li>Guest passes included</li>
+          </ul>
+          <a href="https://wa.me/917040909085" class="plan-btn" target="_blank">Get Started</a>
+        </div>
+      </div>
+      <p class="plan-note">* Contact us on WhatsApp for exact pricing and current offers</p>
+    </div>
+  </section>
+
+  <!-- LOCATION -->
+  <section class="location" id="location">
+    <div class="location-inner">
+      <div>
+        <p class="section-tag">Find Us</p>
+        <div class="divider"></div>
+        <h2 class="section-title">VISIT US<br>TODAY</h2>
+        <div class="info-block">
+          <p class="info-label">Address</p>
+          <p class="info-value">Pragyaa Fitness, Shiv Rd,<br>Near Daulati International School,<br>Camp, Dabhadi, Malegaon,<br>Maharashtra 423105</p>
+        </div>
+        <div class="info-block">
+          <p class="info-label">Phone / WhatsApp</p>
+          <p class="info-value"><a href="tel:+917040909085" style="color:var(--gold);text-decoration:none">+91 70409 09085</a></p>
+        </div>
+        <div class="info-block">
+          <p class="info-label">Hours</p>
+          <p class="info-value">Monday – Saturday: 6:00 AM – 10:00 PM<br>Sunday: 7:00 AM – 12:00 PM</p>
+        </div>
+        <a href="https://maps.google.com/?q=Pragyaa+Fitness+Malegaon" class="btn-primary" target="_blank" style="display:inline-block">Get Directions</a>
+      </div>
+      <div>
+        <div class="map-wrap">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3721.3!2d74.5299!3d20.5579!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bde98b4a945b5c9%3A0x0!2zUHJhZ3lhYSBGaXRuZXNzLCBTaGl2IFJkLCBuZWFyIERhdWxhdGkgSW50ZXJuYXRpb25hbCBTY2hvb2wsIENhbXAsIERhYmhhZGksIE1hbGVnYW9uLCBNYWhhcmFzaHRyYSA0MjMxMDU!5e0!3m2!1sen!2sin!4v1"
+            allowfullscreen loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Pragyaa Fitness location map">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <div class="cta-banner">
+    <h2>START YOUR<br>FITNESS JOURNEY</h2>
+    <p>Message us on WhatsApp — we'll guide you to the right plan</p>
+    <a href="https://wa.me/917040909085" class="cta-wa" target="_blank">
+      <svg class="wa-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+      </svg>
+      Chat on WhatsApp
+    </a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">PRAGYAA FITNESS</div>
+    <p class="footer-copy">© 2025 Pragyaa Fitness, Malegaon. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="#home">Home</a>
+      <a href="#equipment">Equipment</a>
+      <a href="#membership">Membership</a>
+      <a href="#location">Location</a>
+    </div>
+  </footer>
+
+  <!-- WHATSAPP FLOAT BUTTON -->
+  <a href="https://wa.me/917040909085" class="wa-float" target="_blank" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+    </svg>
+  </a>
+
+</body>
+</html>
