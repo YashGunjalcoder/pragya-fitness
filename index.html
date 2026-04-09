@@ -29,16 +29,19 @@
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 16px 24px;
-      background: rgba(10,10,10,0.85); backdrop-filter: blur(12px);
+      padding: 14px 20px;
+      background: rgba(10,10,10,0.92); backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
-      gap: 12px;
+      gap: 8px; overflow: hidden;
     }
-    .nav-logo { font-family: var(--font-display); font-size: 20px; letter-spacing: 2px; color: var(--gold); flex-shrink: 0; }
-    .nav-links { display: flex; gap: 20px; list-style: none; flex-shrink: 0; }
-    .nav-links a { color: var(--muted); text-decoration: none; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; transition: color .2s; white-space: nowrap; }
+    .nav-logo { font-family: var(--font-display); font-size: 18px; letter-spacing: 2px; color: var(--gold); flex-shrink: 0; white-space: nowrap; }
+    .nav-links { display: flex; gap: 16px; list-style: none; flex-shrink: 1; min-width: 0; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; transition: color .2s; white-space: nowrap; }
     .nav-links a:hover { color: var(--white); }
-    .nav-cta { background: var(--gold); color: var(--black); padding: 9px 18px; font-size: 12px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; border: none; cursor: pointer; transition: background .2s; white-space: nowrap; flex-shrink: 0; }
+    .nav-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .nav-admin-btn { background: transparent; border: 1px solid var(--border2); color: var(--muted); padding: 8px 14px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; font-family: var(--font-body); transition: all .2s; white-space: nowrap; }
+    .nav-admin-btn:hover { border-color: var(--gold); color: var(--gold); }
+    .nav-cta { background: var(--gold); color: var(--black); padding: 9px 16px; font-size: 11px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; border: none; cursor: pointer; transition: background .2s; white-space: nowrap; flex-shrink: 0; }
     .nav-cta:hover { background: var(--gold-light); }
 
     .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 40px 80px; position: relative; background: var(--black); overflow: hidden; }
@@ -297,13 +300,17 @@
     .toast.error { border-left: 3px solid var(--red); }
 
     .sidebar-mob-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 390; }
-    .hamburger-admin { background: none; border: none; color: var(--white); cursor: pointer; padding: 4px; display: none; }
+    .hamburger-admin { background: none; border: none; color: var(--white); cursor: pointer; padding: 4px; display: block; }
 
-    @media (max-width: 1024px) {
-      nav { padding: 14px 16px; }
+    /* Always show hamburger for admin access on ALL screen sizes */
+    .hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; flex-shrink: 0; }
+    .hamburger span { width: 22px; height: 2px; background: var(--white); display: block; }
+
+    @media (max-width: 768px) {
+      nav { padding: 12px 16px; }
       .nav-links { display: none; }
+      .nav-admin-btn { display: none; }
       .nav-cta { display: none; }
-      .hamburger { display: flex; }
       .hero { padding: 0 20px 60px; }
       .hero-stats { display: none; }
       section { padding: 70px 20px; }
@@ -325,6 +332,12 @@
       table th:nth-child(3), table td:nth-child(3),
       table th:nth-child(4), table td:nth-child(4) { display: none; }
     }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .hero { padding: 0 30px 80px; }
+      .plans-grid { grid-template-columns: 1fr 1fr; }
+      .stats-grid { grid-template-columns: repeat(4,1fr); }
+    }
   </style>
 </head>
 <body>
@@ -340,8 +353,8 @@
         <li><a href="#membership">Membership</a></li>
         <li><a href="#location">Location</a></li>
       </ul>
-      <div style="display:flex;align-items:center;gap:12px">
-        <button onclick="openLoginScreen()" style="background:transparent;border:1px solid var(--border);color:var(--muted);padding:10px 18px;font-size:12px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;font-family:var(--font-body);transition:all .2s;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">Admin</button>
+      <div class="nav-right">
+        <button class="nav-admin-btn" onclick="openLoginScreen()">Admin</button>
         <a href="https://wa.me/917040909085" class="nav-cta" target="_blank">Join Now</a>
         <button class="hamburger" onclick="openMobileMenu()" aria-label="Open menu">
           <span></span><span></span><span></span>
@@ -905,7 +918,7 @@
         const dl=daysLeft(m.end);const active=m.active&&dl>=0;const exp=active&&dl<=5;
         const sb=active?(exp?`<span class="badge badge-amber"><span class="badge-dot"></span>${dl}d left</span>`:`<span class="badge badge-green"><span class="badge-dot"></span>Active</span>`):`<span class="badge badge-red"><span class="badge-dot"></span>${dl<0?'Expired':'Inactive'}</span>`;
         const cb=m.cardio==='cardio'?`<span class="badge badge-blue">Cardio</span>`:`<span class="badge" style="background:#1a1a1a;color:var(--muted)">Non-Cardio</span>`;
-        return`<tr><td><div style="font-weight:500">${m.name}</div><div style="font-size:11px;color:var(--muted)">${m.phone}</div></td><td>${PLAN_LABELS[m.plan]||m.plan}</td><td>${cb}</td><td style="font-size:12px;color:${dl<0?'var(--red)':dl<=5?'var(--amber)':'var(--muted)'}">${fmtDate(m.end)}</td><td>${sb}</td><td><div class="action-btns"><button class="act-btn" onclick="viewMember('${m.id}')">View</button><button class="act-btn" onclick="editMember('${m.id}')">Edit</button><button class="act-btn success" onclick="openExtend('${m.id}')">Extend</button><button class="act-btn danger" onclick="deleteMember('${m.id}')">Del</button></div></td></tr>`;
+        return`<tr><td><div style="font-weight:500">${m.name}</div><div style="font-size:11px;color:var(--muted)">${m.phone}</div></td><td>${PLAN_LABELS[m.plan]||m.plan}</td><td>${cb}</td><td style="font-size:12px;color:${dl<0?'var(--red)':dl<=5?'var(--amber)':'var(--muted)'}">${fmtDate(m.end)}</td><td>${sb}</td><td><div class="action-btns"><button class="act-btn" onclick="viewMember('${m.id}')">View</button><button class="act-btn" onclick="editMember('${m.id}')">Edit</button><button class="act-btn success" onclick="openExtend('${m.id}')">Extend</button><button class="act-btn ${active?'danger':'success'}" onclick="toggleActive('${m.id}')" style="font-weight:500">${active?'Deactivate':'Activate'}</button><button class="act-btn danger" onclick="deleteMember('${m.id}')">Del</button></div></td></tr>`;
       }).join('');
     }
 
